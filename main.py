@@ -43,6 +43,9 @@ ttk.Separator(root, orient=HORIZONTAL).grid(row=5, columnspan=1, ipadx=680)
 
 f_tabela= Frame(root, width=850, height=200, bg=co0)
 f_tabela.grid(row=6, column=0, pady=0, padx=10, sticky=NSEW)
+#**********************CRIANDO CONFIGURAÇÃO********************************
+
+
 
 #**********************CRIANDO LABEL********************************
 
@@ -50,24 +53,34 @@ f_tabela.grid(row=6, column=0, pady=0, padx=10, sticky=NSEW)
 l_titulo = Label(f_titulo, text="Cadastro de rotas", font=('Ivy 20 bold'), bg=co0, fg=co1)
 l_titulo.place(x=430, y=23, anchor=CENTER)
 
+
+l_id = Label(f_painel, text="id:", font=('Ivy 10 bold'), bg=co0, fg=co1)
+l_id.place(x=10, y=10)
+e_id= Entry(f_painel, width=10, justify=CENTER, font=('Ivy 10 bold'),  relief='solid')
+e_id.place(x=40, y=10)
+
+
+d_data_nascimento = DateEntry(f_painel, width=18, background='darkblue', foreground='white', borderwidth=2, year=2023 )
+d_data_nascimento.place(x=10, y=40)  
+
 #**********************CRIANDO ENTRYS********************************
 # Botoes Cabeçalho
 app_img_add = Image.open('img/save.png')
 app_img_add = app_img_add.resize((18,18))
 app_img_add = ImageTk.PhotoImage(app_img_add)
-app_add = Button(f_botoes,command=None, image=app_img_add, text="Salvar", width=80, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co1, fg=co0)
+app_add = Button(f_botoes,command=None, image=app_img_add, text="Salvar", width=80, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co0, fg=co1)
 app_add.grid(row=0, column=1)
 
 app_img_update = Image.open('img/update.png')
 app_img_update = app_img_update.resize((18,18))
 app_img_update = ImageTk.PhotoImage(app_img_update)
-app_update = Button(f_botoes,command=None, image=app_img_update, text="Atualizar", width=90, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co1, fg=co0)
+app_update = Button(f_botoes,command=None, image=app_img_update, text="Atualizar", width=90, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co0, fg=co1)
 app_update.grid(row=0, column=2)
 
 app_img_delete = Image.open('img/delete.png')
 app_img_delete = app_img_delete.resize((18,18))
 app_img_delete = ImageTk.PhotoImage(app_img_delete)
-app_delete = Button(f_botoes,command=None, image=app_img_delete, text="Deletar", width=90, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co1, fg=co0)
+app_delete = Button(f_botoes,command=None, image=app_img_delete, text="Deletar", width=90, compound=LEFT, overrelief=RIDGE ,font=('Ivy 11'), bg=co0, fg=co1)
 app_delete.grid(row=0, column=3)
 
 
