@@ -9,6 +9,7 @@ from tkinter import filedialog
 from tkinter.ttk import Style
 from colors import*
 from PIL import Image, ImageTk
+from tkinter import Scrollbar
 
 import tkinter as tk
 from views import*
