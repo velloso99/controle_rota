@@ -2,6 +2,7 @@ from imports import *
 
 
 
+
 #Criando a janela
 root = tk.Tk()
 root.title("Controle de Estoque")
@@ -44,7 +45,32 @@ ttk.Separator(root, orient=HORIZONTAL).grid(row=5, columnspan=1, ipadx=680)
 f_tabela= Frame(root, width=850, height=200, bg=co0)
 f_tabela.grid(row=6, column=0, pady=0, padx=10, sticky=NSEW)
 #**********************CRIANDO CONFIGURAÇÃO********************************
+# Função para pegar a data selecionada
+def calendario():
+    
+    def pegar_data():
+        data_selecionada = cal.selection_get()  # Obtém a data selecionada
+        entry_data.delete(0, END)  # Limpa o Entry
+        entry_data.insert(0, data_selecionada.strftime("%d/%m/%Y"))  # Insere a data formatada no Entry
+        calendario_root.destroy()  # Fecha o calendário
 
+    calendario_root = tk.Toplevel(root)  # Cria uma nova janela
+    calendario_root.title("Selecionar Data")
+    calendario_root.resizable(width=False, height=False)
+    largura_root = 200
+    altura_root = 270
+    #obter tamanho da tela
+    largura_tela = calendario_root.winfo_screenwidth()
+    altura_tela = calendario_root.winfo_screenheight()
+    # Calcular posição para centralizar
+    pos_x = ( largura_tela-largura_root )//2
+    pos_y = (altura_tela - altura_root)//2
+    # Definir geometria da janela (LxA+X+Y)
+    calendario_root.geometry(f"{largura_root}x{altura_root}+{pos_x}+{pos_y}")
+    cal = Calendar(calendario_root, selectmode="day", date_pattern="dd/mm/yyyy")  # Cria o calendário
+    cal.pack(pady=20)
+    Button(calendario_root, text="Selecionar", command=pegar_data).pack(pady=10)  # Botão para selecionar a data
+        
 
 
 #**********************CRIANDO LABEL********************************
@@ -60,8 +86,10 @@ e_id= Entry(f_painel, width=10, justify=CENTER, font=('Ivy 10 bold'),  relief='s
 e_id.place(x=40, y=10)
 
 
-d_data_nascimento = DateEntry(f_painel, width=18, background='darkblue', foreground='white', borderwidth=2, year=2023 )
-d_data_nascimento.place(x=10, y=40)  
+bt_calendario = Button(f_painel, text="Data", command=calendario)
+bt_calendario.place(x=10, y=40)
+entry_data = Entry(f_painel, width=10, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
+entry_data.place(x=70, y=40) 
 
 #**********************CRIANDO ENTRYS********************************
 # Botoes Cabeçalho
