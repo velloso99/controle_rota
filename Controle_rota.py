@@ -105,6 +105,21 @@ l_valor_comb.place(x=10, y=100)
 e_valor_comb= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
 e_valor_comb.place(x=180, y=100)
 
+l_calculo = Label(f_painel, text="Valor de consumo (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
+l_calculo.place(x=10, y=130)
+e_calculo= Label(f_painel, text="", font=('Ivy 10 bold'), bg=co0, fg=co1)
+e_calculo.place(x=160, y=130)
+
+l_total_combustivel = Label(f_painel, text="Valor Total gasto Comb. (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
+l_total_combustivel.place(x=10, y=160)
+e_total_combustivel= Label(f_painel, text="", font=('Ivy 10 bold'), bg=co0, fg=co1)
+e_total_combustivel.place(x=200, y=160)
+
+l_total_de_lucro = Label(f_painel, text="Total do Lucro (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
+l_total_de_lucro.place(x=10, y=190)
+e_total_de_lucro= Label(f_painel, text="0", font=('Ivy 10 bold'), bg=co0, fg=co1)
+e_total_de_lucro.place(x=160, y=190)
+
 #**********************CRIANDO ENTRYS********************************
 # Botoes Cabeçalho
 bt_adicionar = Button(f_botoes, command=None, text="Adicionar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
