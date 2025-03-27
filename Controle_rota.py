@@ -1,8 +1,5 @@
 from imports import *
 
-
-
-
 #Criando a janela
 root = tk.Tk()
 root.title("Controle de Estoque")
@@ -71,8 +68,6 @@ def calendario():
     cal.pack(pady=20)
     Button(calendario_root, text="Selecionar", command=pegar_data).pack(pady=10)  # Botão para selecionar a data
         
-
-
 def registrar_lucro():
     try:
         data = entry_data.get().strip()
@@ -114,6 +109,66 @@ def registrar_lucro():
 
     except Exception as e:
         messagebox.showerror("Erro", f"Ocorreu um erro inesperado: {e}")
+
+def update_lucro():
+        
+        try:
+            tree_itens = tree_lucro.focus()
+            tree_dicionario = tree_lucro.item(tree_itens)
+            tree_lista = tree_dicionario['values']
+            
+            valor_id = tree_lista[0]
+            
+            # inserindo os valores nas enties
+            entry_data.insert(0, tree_lista[1])
+            e_valor_rota.insert(0, tree_lista[2])
+            e_km_rodado.insert(0, tree_lista[3])
+            e_calculo.insert(0, tree_lista[4])
+            e_valor_comb.insert(0, tree_lista[5])
+            e_total_combustivel.insert(0, tree_lista[6])
+            e_total_de_lucro.insert(0, tree_lista[7])
+            
+            # função atualizar
+            def update():
+                
+        
+                data = entry_data.get().strip()
+                valor_rota = e_valor_rota.get().strip()
+                km_rodado = e_km_rodado.get().strip()
+                valor_comb = e_valor_comb.get().strip()
+                calculo = e_calculo.get().strip()
+                total_comb = e_total_combustivel.get().strip()
+                total_lucro = e_total_de_lucro.get().strip()
+        
+                lista = [data, valor_rota, km_rodado, calculo, valor_comb, total_comb, total_lucro, valor_id]
+        
+                #Verificando se os campos estão preenchidos
+                for i in lista:
+                    if i == '':
+                        messagebox.showerror('Erro', 'Preencha todos os campos!')
+                        return
+                #inserindo os dados 
+                update_lucro(lista)  # Ensure the function is defined below
+                messagebox.showinfo('Sucesso', 'Curso adicionado com sucesso')
+            
+                entry_data.delete(0, END)
+                e_valor_rota.delete(0, END)
+                e_km_rodado.delete(0, END)
+                e_calculo.delete(0, END)
+                e_valor_comb.delete(0, END)
+                e_total_combustivel.delete(0, END)
+                e_total_de_lucro.delete(0, END)
+            
+                #mostrando os valores na tabela
+                mostrar_lucro()  
+                    
+                # Distruir botao salvar apos savalvar os dados  
+                botao_salvar.destroy()
+           
+            botao_salvar = Button(f_botoes, command=update, text="Salvar Alterações", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
+            botao_salvar.grid(row=0, column=4)
+        except IndexError:
+            messagebox.showerror('Erro', 'Selecione um dos curos na tabela')
     
 
 #**********************CRIANDO LABEL********************************
@@ -168,7 +223,7 @@ e_total_de_lucro.place(x=160, y=270)
 bt_adicionar = Button(f_botoes, command=registrar_lucro, text="Adicionar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
 bt_adicionar.grid(row=0, column=1)
 
-bt_atualizar = Button(f_botoes, command=None, text="Atualizar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
+bt_atualizar = Button(f_botoes, command=update_lucro, text="Atualizar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
 bt_atualizar.grid(row=0, column=2)
 
 bt_deletar = Button(f_botoes, command=None, text="Deletar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
@@ -185,6 +240,20 @@ def mostrar_lucro():
         
         #CREATING A TREEVIEW WITH DUAL SCROLLBARS
         list_header = ['id', 'Data', 'Valor de Rota', 'Km Rodado', 'Calculo', 'valor Combustivel', 'Total Combustivel', 'Total']
+        # Define the atualizar_lucro function
+        def atualizar_lucro(lista):
+            # Placeholder implementation for updating data
+            # Replace this with actual database update logic
+            print(f"Updating record with data: {lista}")
+        
+        # Placeholder function for ver_lucro
+        def ver_lucro():
+            # Return a sample list of data for demonstration
+            return [
+                [1, "01/01/2023", 100.0, 50.0, 20.0, 5.0, 25.0, 75.0],
+                [2, "02/01/2023", 200.0, 100.0, 40.0, 10.0, 50.0, 150.0]
+            ]
+        
         df_list = ver_lucro()
         
         global tree_lucro

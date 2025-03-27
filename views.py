@@ -27,15 +27,31 @@ def criar_dados(lista):
     conn.commit()
     conn.close()
 
-def atualizar_lucro(i):
-    with con:
-        cur = con.cursor()
-        query = "UPDATE lucro_entregas SET data=?, valor_rota=?, km_rodado=?, calculo=?, valor_combustivel=?, total_combustivel=?, total=? WHERE id=?"
-        cur.execute(query, i)  # A variável 'dados' já é uma tupla
-        con.commit()
+def update_lucro(i):
+    try:
+        with con:
+            cur = con.cursor()
 
-        # Retorna True se a atualização for bem-sucedida
-        return cur.rowcount > 0
+            # Verifica se o ID existe antes de tentar atualizar
+            cur.execute("SELECT COUNT(*) FROM lucro_entregas WHERE id=?", (i[-1],))
+            if cur.fetchone()[0] == 0:
+                print("Erro: O ID fornecido não existe no banco de dados.")
+                return False
+
+            query = """
+            UPDATE lucro_entregas 
+            SET data=?, valor_rota=?, km_rodado=?, calculo=?, valor_combustivel=?, total_combustivel=?, total=? 
+            WHERE id=?
+            """
+            cur.execute(query, i)
+            con.commit()
+
+            # Retorna True se a atualização foi bem-sucedida (pelo menos uma linha afetada)
+            return cur.rowcount > 0
+
+    except sqlite3.Error as e:
+        print(f"Erro ao atualizar dados: {e}")
+        return False
     
 def ver_lucro():
     try:
