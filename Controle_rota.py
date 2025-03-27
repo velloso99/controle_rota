@@ -6,11 +6,11 @@ from imports import *
 #Criando a janela
 root = tk.Tk()
 root.title("Controle de Estoque")
-root.geometry("900x900")
+root.geometry("900x820")
 root.configure(background=co0)
 root.resizable(width=False, height=False)
 largura_root = 900
-altura_root = 900
+altura_root = 820
 #obter tamanho da tela
 largura_tela = root.winfo_screenwidth()
 altura_tela = root.winfo_screenheight()
@@ -42,7 +42,7 @@ f_painel.grid(row=4, column=0, pady=0, padx=0, sticky=NSEW)
 
 ttk.Separator(root, orient=HORIZONTAL).grid(row=5, columnspan=1, ipadx=680)
 
-f_tabela= Frame(root, width=850, height=200, bg=co0)
+f_tabela= Frame(root, width=900, height=300, bg=co0)
 f_tabela.grid(row=6, column=0, pady=0, padx=10, sticky=NSEW)
 #**********************CRIANDO CONFIGURAÇÃO********************************
 # Função para pegar a data selecionada
@@ -73,6 +73,49 @@ def calendario():
         
 
 
+def registrar_lucro():
+    try:
+        data = entry_data.get().strip()
+        valor_rota = e_valor_rota.get().strip()
+        km_rodado = e_km_rodado.get().strip()
+        valor_comb = e_valor_comb.get().strip()
+        calculo = e_calculo.get().strip()
+        total_comb = e_total_combustivel.get().strip()
+        total_lucro = e_total_de_lucro.get().strip()
+
+        # Verificar se os campos estão preenchidos
+        if not all([data, valor_rota, km_rodado, valor_comb, calculo, total_comb, total_lucro]):
+            messagebox.showerror("Erro", "Preencha todos os campos!")
+            return
+        
+        # Converter valores numéricos
+        try:
+            valor_rota = float(valor_rota)
+            km_rodado = float(km_rodado)
+            valor_comb = float(valor_comb)
+            calculo = float(calculo)
+            total_comb = float(total_comb)
+            total_lucro = float(total_lucro)
+        except ValueError:
+            messagebox.showerror("Erro", "Certifique-se de inserir apenas números nos campos de valor!")
+            return
+        
+        lista = [data, valor_rota, km_rodado, calculo, valor_comb, total_comb, total_lucro]
+
+        # Inserindo dados no banco de dados
+        criar_dados(lista)
+        messagebox.showinfo("Sucesso", "Dados inseridos com sucesso!")
+
+        # Limpar os campos de entrada
+        for campo in [entry_data, e_valor_rota, e_km_rodado, e_valor_comb, e_calculo, e_total_combustivel, e_total_de_lucro]:
+            campo.delete(0, END)
+
+        mostrar_lucro()
+
+    except Exception as e:
+        messagebox.showerror("Erro", f"Ocorreu um erro inesperado: {e}")
+    
+
 #**********************CRIANDO LABEL********************************
 
 
@@ -96,33 +139,33 @@ e_valor_rota= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  rel
 e_valor_rota.place(x=135, y=70)
 
 l_km_rodado = Label(f_painel, text="Km Rodado (KM):", font=('Ivy 10 bold'), bg=co0, fg=co1)
-l_km_rodado.place(x=10, y=100)
+l_km_rodado.place(x=10, y=110)
 e_km_rodado= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
-e_km_rodado.place(x=135, y=100)
+e_km_rodado.place(x=135, y=110)
 
 l_valor_comb = Label(f_painel, text="Valor do combustivel (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
-l_valor_comb.place(x=10, y=100)
+l_valor_comb.place(x=10, y=150)
 e_valor_comb= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
-e_valor_comb.place(x=180, y=100)
+e_valor_comb.place(x=180, y=150)
 
 l_calculo = Label(f_painel, text="Valor de consumo (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
-l_calculo.place(x=10, y=130)
-e_calculo= Label(f_painel, text="", font=('Ivy 10 bold'), bg=co0, fg=co1)
-e_calculo.place(x=160, y=130)
+l_calculo.place(x=10, y=190)
+e_calculo= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
+e_calculo.place(x=160, y=190)
 
 l_total_combustivel = Label(f_painel, text="Valor Total gasto Comb. (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
-l_total_combustivel.place(x=10, y=160)
-e_total_combustivel= Label(f_painel, text="", font=('Ivy 10 bold'), bg=co0, fg=co1)
-e_total_combustivel.place(x=200, y=160)
+l_total_combustivel.place(x=10, y=230)
+e_total_combustivel= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
+e_total_combustivel.place(x=200, y=230)
 
 l_total_de_lucro = Label(f_painel, text="Total do Lucro (R$):", font=('Ivy 10 bold'), bg=co0, fg=co1)
-l_total_de_lucro.place(x=10, y=190)
-e_total_de_lucro= Label(f_painel, text="0", font=('Ivy 10 bold'), bg=co0, fg=co1)
-e_total_de_lucro.place(x=160, y=190)
+l_total_de_lucro.place(x=10, y=270)
+e_total_de_lucro= Entry(f_painel, width=15, justify=LEFT, font=('Ivy 10 bold'),  relief='solid')
+e_total_de_lucro.place(x=160, y=270)
 
 #**********************CRIANDO ENTRYS********************************
 # Botoes Cabeçalho
-bt_adicionar = Button(f_botoes, command=None, text="Adicionar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
+bt_adicionar = Button(f_botoes, command=registrar_lucro, text="Adicionar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
 bt_adicionar.grid(row=0, column=1)
 
 bt_atualizar = Button(f_botoes, command=None, text="Atualizar", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))

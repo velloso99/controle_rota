@@ -1,3 +1,5 @@
+from imports import *
+from tkinter import messagebox
 import sqlite3
 
 
@@ -9,19 +11,21 @@ except sqlite3.Error as e:
     print("Erro ao se conectar com Banco de Dados!")
     
 # Tabela de de Lucro de Entregas--------------------------------------
-def criar_dados(i):
-    with con:
-        cur = con.cursor()
-        query = "INSERT INTO lucro_entregas(data, valor_rota, km_rodado, calculo, valor_combustivel, total_combustivel, total) values(?,?,?,?,?,?,?)"
-        cur.execute(query, i)
-        
-def verificar_lucro(usuario):
-    con = sqlite3.connect('calculo_rota.db')
-    cursor = con.cursor()
-    cursor.execute("SELECT * FROM lucro_entregas WHERE usuario=?", (usuario,))
-    resultado = cursor.fetchall()
-    cursor.close()
-    return bool(resultado)
+def criar_dados(lista):
+    conn = sqlite3.connect("calculo_rota.db")
+    cursor = conn.cursor()
+    
+    # Verifica se os dados já existem
+    cursor.execute("SELECT COUNT(*) FROM lucro_entregas WHERE data=? AND valor_rota=? AND km_rodado=?", (lista[0], lista[1], lista[2]))
+    if cursor.fetchone()[0] > 0:
+        messagebox.showwarning("Aviso", "Esse registro já existe no banco de dados!")
+        conn.close()
+        return
+
+    # Inserindo os dados
+    cursor.execute("INSERT INTO lucro_entregas (data, valor_rota, km_rodado, calculo, valor_comb, total_comb, total_lucro) VALUES (?, ?, ?, ?, ?, ?, ?)", lista)
+    conn.commit()
+    conn.close()
 
 def atualizar_lucro(i):
     with con:
