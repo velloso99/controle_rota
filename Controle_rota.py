@@ -111,64 +111,64 @@ def registrar_lucro():
         messagebox.showerror("Erro", f"Ocorreu um erro inesperado: {e}")
 
 def update_lucro():
+    try:
+        tree_itens = tree_lucro.focus()
+        tree_dicionario = tree_lucro.item(tree_itens)
+        tree_lista = tree_dicionario['values']
         
-        try:
-            tree_itens = tree_lucro.focus()
-            tree_dicionario = tree_lucro.item(tree_itens)
-            tree_lista = tree_dicionario['values']
-            
-            valor_id = tree_lista[0]
-            
-            # inserindo os valores nas enties
-            entry_data.insert(0, tree_lista[1])
-            e_valor_rota.insert(0, tree_lista[2])
-            e_km_rodado.insert(0, tree_lista[3])
-            e_calculo.insert(0, tree_lista[4])
-            e_valor_comb.insert(0, tree_lista[5])
-            e_total_combustivel.insert(0, tree_lista[6])
-            e_total_de_lucro.insert(0, tree_lista[7])
-            
-            # função atualizar
-            def update():
-                
+        if not tree_lista:
+            raise IndexError  # Se nada estiver selecionado, forçamos um erro
         
-                data = entry_data.get().strip()
-                valor_rota = e_valor_rota.get().strip()
-                km_rodado = e_km_rodado.get().strip()
-                valor_comb = e_valor_comb.get().strip()
-                calculo = e_calculo.get().strip()
-                total_comb = e_total_combustivel.get().strip()
-                total_lucro = e_total_de_lucro.get().strip()
+        valor_id = tree_lista[0]
         
-                lista = [data, valor_rota, km_rodado, calculo, valor_comb, total_comb, total_lucro, valor_id]
+        # Inserindo os valores nos campos de entrada
+        entry_data.insert(0, tree_lista[1])
+        e_valor_rota.insert(0, tree_lista[2])
+        e_km_rodado.insert(0, tree_lista[3])
+        e_calculo.insert(0, tree_lista[4])
+        e_valor_comb.insert(0, tree_lista[5])
+        e_total_combustivel.insert(0, tree_lista[6])
+        e_total_de_lucro.insert(0, tree_lista[7])
         
-                #Verificando se os campos estão preenchidos
-                for i in lista:
-                    if i == '':
-                        messagebox.showerror('Erro', 'Preencha todos os campos!')
-                        return
-                #inserindo os dados 
-                update_lucro(lista)  # Ensure the function is defined below
-                messagebox.showinfo('Sucesso', 'Curso adicionado com sucesso')
+        # Função para atualizar os dados
+        def update():
             
-                entry_data.delete(0, END)
-                e_valor_rota.delete(0, END)
-                e_km_rodado.delete(0, END)
-                e_calculo.delete(0, END)
-                e_valor_comb.delete(0, END)
-                e_total_combustivel.delete(0, END)
-                e_total_de_lucro.delete(0, END)
+            data = entry_data.get().strip()
+            valor_rota = e_valor_rota.get().strip()
+            km_rodado = e_km_rodado.get().strip()
+            valor_comb = e_valor_comb.get().strip()
+            calculo = e_calculo.get().strip()
+            total_comb = e_total_combustivel.get().strip()
+            total_lucro = e_total_de_lucro.get().strip()
+
+            lista = [data, valor_rota, km_rodado, calculo, valor_comb, total_comb, total_lucro, valor_id]
+
+            # Verificar se todos os campos foram preenchidos
+            if not all(lista):
+                messagebox.showerror('Erro', 'Preencha todos os campos!')
+                return
             
-                #mostrando os valores na tabela
-                mostrar_lucro()  
-                    
-                # Distruir botao salvar apos savalvar os dados  
-                botao_salvar.destroy()
-           
-            botao_salvar = Button(f_botoes, command=update, text="Salvar Alterações", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
-            botao_salvar.grid(row=0, column=4)
-        except IndexError:
-            messagebox.showerror('Erro', 'Selecione um dos curos na tabela')
+            # Atualizando os dados no banco de dados
+            update_lucro(lista)  # Substituir pelo nome correto da função
+            messagebox.showinfo('Sucesso', 'Dados atualizados com sucesso!')
+
+            # Limpar os campos de entrada
+            for campo in [entry_data, e_valor_rota, e_km_rodado, e_calculo, e_valor_comb, e_total_combustivel, e_total_de_lucro]:
+                campo.delete(0, END)
+
+            # Atualizar a exibição da tabela
+            mostrar_lucro()
+
+            # Destruir o botão salvar, se existir
+            if botao_salvar.winfo_exists():
+               botao_salvar.destroy()
+
+        # Criando o botão para salvar alterações
+        botao_salvar = Button(f_botoes, command=update, text="Salvar Alterações", bd=3, bg=co0, fg=co1, font=('verdana', 9, 'bold'))
+        botao_salvar.grid(row=0, column=4)
+    
+    except IndexError:
+        messagebox.showerror('Erro', 'Selecione um item na tabela para atualizar.')
     
 
 #**********************CRIANDO LABEL********************************
